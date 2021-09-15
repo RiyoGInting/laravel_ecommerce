@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +20,22 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin:admin']], function () {
-    Route::get('/login', [AdminController::class, 'loginForm']);
-    Route::post('/login', [AdminController::class, 'store'])->name('admin.login');
+    Route::get('/login', [AdminAuthenticatedSessionController::class, 'login']);
+    Route::post('/login', [AdminAuthenticatedSessionController::class, 'store'])->name('admin.login');
 });
 
 Route::middleware(['auth:sanctum,admin', 'verified'])->get('/admin/dashboard', function () {
-    return view('dashboard');
+    return view('admin.index');
 })->name('dashboard');
+
+// Admin Routes
+Route::get('/admin/logout', [AdminAuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
+Route::get('/admin/profile', [AdminController::class, 'profile'])->name('admin.profile');
+Route::get('/admin/profile/edit', [AdminController::class, 'editProfile'])->name('admin.profile.edit');
+Route::post('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.profile.update');
+Route::get('/admin/password/edit', [AdminController::class, 'editPassword'])->name('admin.edit.password');
+Route::post('/admin/password/update', [AdminController::class, 'updatePassword'])->name('admin.update.password');
+
 
 Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

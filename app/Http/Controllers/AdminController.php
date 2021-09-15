@@ -2,112 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Responses\LoginResponse;
-use App\Actions\Fortify\AttemptToAuthenticate;
-use App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use Illuminate\Routing\Pipeline;
-use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
-use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
-use Laravel\Fortify\Contracts\LoginViewResponse;
-use Laravel\Fortify\Contracts\LogoutResponse;
-use Laravel\Fortify\Features;
-use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Http\Requests\LoginRequest;
+use App\Models\Admin;
+use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    /**
-     * The guard implementation.
-     *
-     * @var \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected $guard;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
-     * @return void
-     */
-    public function __construct(StatefulGuard $guard)
+    public function profile()
     {
-        $this->guard = $guard;
+        $admin = Admin::find(1);
+        return view('admin.profile', compact('admin'));
     }
 
-    public function loginForm()
+    public function editProfile()
     {
-        return view('auth.login', ['guard' => 'admin']);
+        $admin = Admin::find(1);
+        return view('admin.edit-profile', compact('admin'));
     }
 
-    /**
-     * Show the login view.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Laravel\Fortify\Contracts\LoginViewResponse
-     */
-    public function create(Request $request): LoginViewResponse
+    public function updateProfile(Request $request)
     {
-        return app(LoginViewResponse::class);
-    }
+        $admin = Admin::find(1);
+        $admin->name = $request->name;
+        $admin->email = $request->email;
 
-    /**
-     * Attempt to authenticate a new session.
-     *
-     * @param  \Laravel\Fortify\Http\Requests\LoginRequest  $request
-     * @return mixed
-     */
-    public function store(LoginRequest $request)
-    {
-        return $this->loginPipeline($request)->then(function ($request) {
-            return app(LoginResponse::class);
-        });
-    }
+        if ($request->file('profile_photo_path')) {
+            $file = $request->file('profile_photo_path');
+            @unlink(public_path('upload/admin/' . $admin->profile_photo_path));
+            $file_name = date('ymdHi') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/admin'), $file_name);
 
-    /**
-     * Get the authentication pipeline instance.
-     *
-     * @param  \Laravel\Fortify\Http\Requests\LoginRequest  $request
-     * @return \Illuminate\Pipeline\Pipeline
-     */
-    protected function loginPipeline(LoginRequest $request)
-    {
-        if (Fortify::$authenticateThroughCallback) {
-            return (new Pipeline(app()))->send($request)->through(array_filter(
-                call_user_func(Fortify::$authenticateThroughCallback, $request)
-            ));
+            $admin->profile_photo_path = $file_name;
         }
 
-        if (is_array(config('fortify.pipelines.login'))) {
-            return (new Pipeline(app()))->send($request)->through(array_filter(
-                config('fortify.pipelines.login')
-            ));
-        }
+        $admin->save();
 
-        return (new Pipeline(app()))->send($request)->through(array_filter([
-            config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
-            Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
-            AttemptToAuthenticate::class,
-            PrepareAuthenticatedSession::class,
-        ]));
+        // toastr notifications
+        $notification = array(
+            'message' => 'Your profile has been updated',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.profile')->with($notification);
     }
 
-    /**
-     * Destroy an authenticated session.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Laravel\Fortify\Contracts\LogoutResponse
-     */
-    public function destroy(Request $request): LogoutResponse
+    public function editPassword()
     {
-        $this->guard->logout();
+        return view('admin.change-password');
+    }
 
-        $request->session()->invalidate();
+    public function updatePassword(Request $request)
+    {
+        $validate = $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed'
+        ]);
 
-        $request->session()->regenerateToken();
+        $admin_password = Admin::find(1)->password;
 
-        return app(LogoutResponse::class);
+        if (Hash::check($request->current_password, $admin_password)) {
+            $admin = Admin::find(1);
+            $admin->password = Hash::make($request->password);
+            $admin->save();
+
+            Auth::logout();
+
+            return redirect()->route('admin.logout');
+        }
+
+        // toastr notifications
+        $notification = array(
+            'message' => 'Invalid Current Password',
+            'alert-type' => 'error'
+        );
+
+        return redirect()->back()->with($notification);
     }
 }
