@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,5 +40,15 @@ Route::post('/admin/password/update', [AdminController::class, 'updatePassword']
 
 
 Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    $id = Auth::user()->id;
+    $user = User::find($id);
+
+    return view('dashboard', compact('user'));
 })->name('dashboard');
+
+// user routes
+Route::get('/user/logout', [UserController::class, 'logout'])->name('user.logout');
+Route::get('/user/profile', [UserController::class, 'editProfile'])->name('user.profile');
+Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
+Route::get('/user/change/password', [UserController::class, 'changePassword'])->name('user.change.password');
+Route::post('/user/update/password', [UserController::class, 'updatePassword'])->name('user.update.password');
