@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -71,4 +72,11 @@ Route::prefix('category')->group(function () {
     Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+
+    // sub-category routes
+    Route::get('/subcategory/list', [SubCategoryController::class, 'index'])->name('all.subcategory');
+    Route::post('/subcategory/store', [SubCategoryController::class, 'store'])->name('subcategory.store');
+    Route::get('/subcategory/edit/{id}', [SubCategoryController::class, 'edit'])->name('subcategory.edit');
+    Route::post('/subcategory/update/{id}', [SubCategoryController::class, 'update'])->name('subcategory.update');
+    Route::get('/subcategory/delete/{id}', [SubCategoryController::class, 'delete'])->name('subcategory.delete');
 });

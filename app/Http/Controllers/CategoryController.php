@@ -98,7 +98,7 @@ class CategoryController extends Controller
     public function delete($id)
     {
         // delete category
-        $category = Category::findOrFail($id)->delete();
+        Category::findOrFail($id)->delete();
 
         // toastr notifications
         $notification = array(
