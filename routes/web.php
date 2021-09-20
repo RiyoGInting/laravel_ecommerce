@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -52,3 +53,12 @@ Route::get('/user/profile', [UserController::class, 'editProfile'])->name('user.
 Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
 Route::get('/user/change/password', [UserController::class, 'changePassword'])->name('user.change.password');
 Route::post('/user/update/password', [UserController::class, 'updatePassword'])->name('user.update.password');
+
+// brands routes
+Route::prefix('brand')->group(function () {
+    Route::get('/list', [BrandController::class, 'index'])->name('all.brand');
+    Route::post('/store', [BrandController::class, 'store'])->name('brand.store');
+    Route::get('/edit/{id}', [BrandController::class, 'edit'])->name('brand.edit');
+    Route::post('/update/{id}', [BrandController::class, 'update'])->name('brand.update');
+    Route::get('/delete/{id}', [BrandController::class, 'delete'])->name('brand.delete');
+});
