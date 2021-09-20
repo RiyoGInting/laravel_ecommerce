@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -61,4 +62,13 @@ Route::prefix('brand')->group(function () {
     Route::get('/edit/{id}', [BrandController::class, 'edit'])->name('brand.edit');
     Route::post('/update/{id}', [BrandController::class, 'update'])->name('brand.update');
     Route::get('/delete/{id}', [BrandController::class, 'delete'])->name('brand.delete');
+});
+
+// category routes
+Route::prefix('category')->group(function () {
+    Route::get('/list', [CategoryController::class, 'index'])->name('all.category');
+    Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::post('/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 });
