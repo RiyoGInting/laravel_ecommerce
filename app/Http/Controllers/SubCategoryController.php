@@ -13,7 +13,7 @@ class SubCategoryController extends Controller
         $subcategories = SubCategory::latest()->get();
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
-        return view('admin.subcategories.index', compact('subcategories', 'categories'));
+        return view('admin.categories.subcategories.index', compact('subcategories', 'categories'));
     }
 
     public function store(Request $request)
@@ -58,7 +58,7 @@ class SubCategoryController extends Controller
         $subcategory = SubCategory::findOrFail($id);
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
-        return view('admin.subcategories.edit', compact('subcategory', 'categories'));
+        return view('admin.categories.subcategories.edit', compact('subcategory', 'categories'));
     }
 
     public function update($id, Request $request)
@@ -110,5 +110,12 @@ class SubCategoryController extends Controller
         );
 
         return redirect()->back()->with($notification);
+    }
+
+    public function getByCategoryId($category_id)
+    {
+        $subcategories = SubCategory::where('category_id', $category_id)->orderBy('name_en', 'ASC')->get();
+
+        return json_encode($subcategories);
     }
 }

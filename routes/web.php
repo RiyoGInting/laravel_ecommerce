@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\SubLevelController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -79,4 +80,12 @@ Route::prefix('category')->group(function () {
     Route::get('/subcategory/edit/{id}', [SubCategoryController::class, 'edit'])->name('subcategory.edit');
     Route::post('/subcategory/update/{id}', [SubCategoryController::class, 'update'])->name('subcategory.update');
     Route::get('/subcategory/delete/{id}', [SubCategoryController::class, 'delete'])->name('subcategory.delete');
+    Route::get('/subcategory/getByCategoryId/{category_id}', [SubCategoryController::class, 'getByCategoryId']);
+
+    // sub-level routes
+    Route::get('/subcategory/sublevel/list', [SubLevelController::class, 'index'])->name('all.sublevel');
+    Route::post('/subcategory/sublevel/store', [SubLevelController::class, 'store'])->name('sublevel.store');
+    Route::get('/subcategory/sublevel/edit/{id}', [SubLevelController::class, 'edit'])->name('sublevel.edit');
+    Route::post('/subcategory/sublevel/update/{id}', [SubLevelController::class, 'update'])->name('sublevel.update');
+    Route::get('/subcategory/sublevel/delete/{id}', [SubLevelController::class, 'delete'])->name('sublevel.delete');
 });

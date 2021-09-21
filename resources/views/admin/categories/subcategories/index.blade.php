@@ -17,19 +17,19 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Category</th>
                                         <th>Name EN</th>
                                         <th>Name ID</th>
+                                        <th>Category</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($subcategories as $subcategory)
                                     <tr>
-                                        <td>{{ $subcategory->category->name_en }}</td>
                                         <td>{{ $subcategory->name_en }}</td>
                                         <td>{{ $subcategory->name_id }}</td>
-                                        <td>
+                                        <td>{{ $subcategory->category->name_en }}</td>
+                                        <td width="25%">
                                             <a href="{{ route('subcategory.edit', $subcategory->id) }}" class="btn btn-info"><i class="fa fa-edit" title="Edit Data"></i></a>
                                             <a href="{{ route('subcategory.delete', $subcategory->id) }}" class="btn btn-danger" id="delete"><i class="fa fa-trash-o" title="Delete Data"></i></a>
                                         </td>
