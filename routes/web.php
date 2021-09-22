@@ -7,6 +7,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubLevelController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -88,4 +89,11 @@ Route::prefix('category')->group(function () {
     Route::get('/subcategory/sublevel/edit/{id}', [SubLevelController::class, 'edit'])->name('sublevel.edit');
     Route::post('/subcategory/sublevel/update/{id}', [SubLevelController::class, 'update'])->name('sublevel.update');
     Route::get('/subcategory/sublevel/delete/{id}', [SubLevelController::class, 'delete'])->name('sublevel.delete');
+    Route::get('/subcategory/sublevel/getBySubCategoryId/{subcategory_id}', [SubLevelController::class, 'getBySubCategoryId']);
+});
+
+// products routes
+Route::prefix('product')->group(function () {
+    Route::get('/add', [ProductController::class, 'addIndex'])->name('add.product');
+    Route::post('/store', [ProductController::class, 'store'])->name('product.store');
 });

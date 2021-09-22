@@ -52,6 +52,14 @@
     <script src="{{ asset('../assets/vendor_components/apexcharts-bundle/irregular-data-series.js') }}"></script>
     <script src="{{ asset('../assets/vendor_components/apexcharts-bundle/dist/apexcharts.js') }}"></script>
 
+    <!-- Input Tags -->
+    <script src="{{ asset('../assets/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js') }}"></script>
+
+    <!-- CK Editor -->
+    <script src="{{ asset('../assets/vendor_components/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('../assets/vendor_plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
+    <script src="{{ asset('backend/js/pages/editor.js') }}"></script>
+
     <!-- Data tables -->
     <script src="{{ asset('../assets/vendor_components/datatable/datatables.min.js') }}"></script>
     <script src="{{ asset('backend/js/pages/data-table.js') }}"></script>

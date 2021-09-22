@@ -119,4 +119,11 @@ class SubLevelController extends Controller
 
         return redirect()->back()->with($notification);
     }
+
+    public function getBySubCategoryId($subcategory_id)
+    {
+        $sublevels = SubLevel::where('subcategory_id', $subcategory_id)->orderBy('name_en', 'ASC')->get();
+
+        return json_encode($sublevels);
+    }
 }

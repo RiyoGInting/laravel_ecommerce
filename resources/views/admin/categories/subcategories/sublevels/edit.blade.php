@@ -1,8 +1,6 @@
 @extends('admin.layouts.master')
 
 @section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <div class="container-full">
     <!-- Main content -->
     <section class="content">
@@ -88,6 +86,7 @@
 
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('select[name="category_id"]').on('change', function() {
