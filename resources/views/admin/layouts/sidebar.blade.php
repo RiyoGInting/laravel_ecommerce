@@ -67,7 +67,7 @@ $route = Route::current()->getName();
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ $route == 'add.product' ? 'active' : '' }}"><a href="{{ route('add.product') }}"><i class="ti-more"></i>Add</a></li>
-                    <li><a href="invoice.html"><i class="ti-more"></i>Manage</a></li>
+                    <li class="{{ $route == 'product.list' ? 'active' : '' }}"><a href="{{ route('product.list') }}"><i class="ti-more"></i>List</a></li>
                 </ul>
             </li>
 

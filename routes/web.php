@@ -94,6 +94,14 @@ Route::prefix('category')->group(function () {
 
 // products routes
 Route::prefix('product')->group(function () {
+    Route::get('/list', [ProductController::class, 'index'])->name('product.list');
     Route::get('/add', [ProductController::class, 'addIndex'])->name('add.product');
     Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::post('/update/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::get('/active/{id}', [ProductController::class, 'active'])->name('product.active');
+    Route::get('/inactive/{id}', [ProductController::class, 'inactive'])->name('product.inactive');
+    Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+    Route::post('/images/update', [ProductController::class, 'multiImageUpdate'])->name('images.update');
+    Route::get('/images/delete/{id}', [ProductController::class, 'multiImageDelete'])->name('images.delete');
 });
