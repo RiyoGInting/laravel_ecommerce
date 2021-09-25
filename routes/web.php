@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubLevelController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SliderController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -99,9 +100,18 @@ Route::prefix('product')->group(function () {
     Route::post('/store', [ProductController::class, 'store'])->name('product.store');
     Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
     Route::post('/update/{id}', [ProductController::class, 'update'])->name('product.update');
-    Route::get('/active/{id}', [ProductController::class, 'active'])->name('product.active');
-    Route::get('/inactive/{id}', [ProductController::class, 'inactive'])->name('product.inactive');
+    Route::get('/active/{id}', [ProductController::class, 'status'])->name('product.status');
     Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
     Route::post('/images/update', [ProductController::class, 'multiImageUpdate'])->name('images.update');
     Route::get('/images/delete/{id}', [ProductController::class, 'multiImageDelete'])->name('images.delete');
+});
+
+// slider routes
+Route::prefix('slider')->group(function () {
+    Route::get('/add', [SliderController::class, 'index'])->name('slider.list');
+    Route::post('/store', [SliderController::class, 'store'])->name('slider.store');
+    Route::get('/edit/{id}', [SliderController::class, 'edit'])->name('slider.edit');
+    Route::post('/update/{id}', [SliderController::class, 'update'])->name('slider.update');
+    Route::get('/active/{id}', [SliderController::class, 'status'])->name('slider.status');
+    Route::get('/delete/{id}', [SliderController::class, 'delete'])->name('slider.delete');
 });

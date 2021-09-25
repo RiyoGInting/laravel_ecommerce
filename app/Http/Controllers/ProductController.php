@@ -256,25 +256,15 @@ class ProductController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    public function active($id)
+    public function status($id)
     {
         $product = Product::findOrFail($id);
-        $product->status = 1;
-        $product->save();
 
-        // toastr notifications
-        $notification = array(
-            'message' => 'Product status has been updated',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->back()->with($notification);
-    }
-
-    public function inactive($id)
-    {
-        $product = Product::findOrFail($id);
-        $product->status = 0;
+        if ($product->status == 1) {
+            $product->status = 0;
+        } else {
+            $product->status = 1;
+        }
         $product->save();
 
         // toastr notifications

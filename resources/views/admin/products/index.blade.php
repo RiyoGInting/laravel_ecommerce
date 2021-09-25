@@ -51,13 +51,13 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('product.edit', $product->id) }}" class="btn-sm btn-info"><i class="fa fa-edit" title="Edit Product"></i></a>
-
-                                            @if($product->status == 1)
-                                            <a href="{{ route('product.inactive', $product->id) }}" class="btn-sm btn-danger"><i class="fa fa-arrow-down" title="Inactive Now"></i></a>
-                                            @else
-                                            <a href="{{ route('product.active', $product->id) }}" class="btn-sm btn-success"><i class="fa fa-arrow-up" title="Active Now"></i></a>
-                                            @endif
-
+                                            <a href="{{ route('product.status', $product->id) }}">
+                                                @if ($product->status == 1)
+                                                <i class="fa fa-arrow-down btn-sm btn-danger" title="Inactive Now"></i>
+                                                @else
+                                                <i class="fa fa-arrow-up btn-sm btn-success" title="Active Now"></i>
+                                                @endif
+                                            </a>
                                             <a href="{{ route('product.delete', $product->id) }}" class="btn-sm btn-danger" id="delete"><i class="fa fa-trash-o" title="Delete Product"></i></a>
                                         </td>
                                     </tr>
