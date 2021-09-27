@@ -19,7 +19,7 @@ class CategorySeeder extends Seeder
             'name_id' => 'Peralatan',
             'slug_en' => 'appliances',
             'slug_id' => 'peralatan',
-            'icon' => 'fa fa-telegram',
+            'icon' => 'fa fa-shopping-bag',
         ]);
 
         DB::table('categories')->insert([
@@ -27,7 +27,7 @@ class CategorySeeder extends Seeder
             'name_id' => 'Kecantikan',
             'slug_en' => 'beauty',
             'slug_id' => 'kecantikan',
-            'icon' => 'fa fa-id-card-o',
+            'icon' => 'fa fa-heartbeat',
         ]);
 
         DB::table('categories')->insert([
@@ -43,11 +43,11 @@ class CategorySeeder extends Seeder
             'name_id' => 'Mode',
             'slug_en' => 'fashion',
             'slug_id' => 'mode',
-            'icon' => 'fa fa-ravelry',
+            'icon' => 'fa fa-diamond',
         ]);
 
         DB::table('categories')->insert([
-            'name_en' => 'Home',
+            'name_en' => 'Sweet Home',
             'name_id' => 'Rumah',
             'slug_en' => 'home',
             'slug_id' => 'rumah',
