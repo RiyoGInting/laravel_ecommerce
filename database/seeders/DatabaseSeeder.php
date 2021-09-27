@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             SubCategorySeeder::class,
             SubLevelSeeder::class,
+            SliderSeeder::class,
+            ProductSeeder::class,
+            MultiImageSeeder::class,
         ]);
     }
 }

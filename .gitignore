@@ -3,8 +3,6 @@
 /public/storage
 /public/upload/admin/*
 /public/upload/user/*
-/public/upload/product/*
-/public/upload/slider/*
 /storage/*.key
 /vendor
 .env

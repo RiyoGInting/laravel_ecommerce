@@ -33,6 +33,7 @@ class CreateProductsTable extends Migration
             $table->string('color_id');
             $table->string('price');
             $table->string('discount')->nullable();
+            $table->string('discount_percentage')->nullable();
             $table->string('short_description_en');
             $table->string('short_description_id');
             $table->text('long_description_en');

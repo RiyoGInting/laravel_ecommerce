@@ -101,6 +101,12 @@ class ProductController extends Controller
         $product->special_deals = $request->special_deals;
         $product->status = 1;
 
+        // count discount percentage
+        if ($request->discount) {
+            $percentage = ($request->discount / $request->price) * 100;
+            $product->discount_percentage = $percentage;
+        }
+
         // save product to db
         $product->save();
 
@@ -198,6 +204,13 @@ class ProductController extends Controller
             $product->thumbnail = $path;
         }
 
+        // count discount percentage
+        if ($request->discount) {
+            $percentage = ($request->discount / $request->price) * 100;
+            $product->discount_percentage = $percentage;
+        } else {
+            $product->discount_percentage = NULL;
+        }
         $product->save();
 
         // toastr notifications
