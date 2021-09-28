@@ -94,17 +94,16 @@ class ProductController extends Controller
         $product->short_description_id = $request->short_description_id;
         $product->long_description_en = $request->long_description_en;
         $product->long_description_id = $request->long_description_id;
-        $product->hot_deals = $request->hot_deals;
 
         $product->featured = $request->featured;
         $product->special_offer = $request->special_offer;
         $product->special_deals = $request->special_deals;
         $product->status = 1;
 
-        // count discount percentage
         if ($request->discount) {
             $percentage = ($request->discount / $request->price) * 100;
             $product->discount_percentage = $percentage;
+            $product->hot_deals = 1;
         }
 
         // save product to db
@@ -184,7 +183,6 @@ class ProductController extends Controller
         $product->short_description_id = $request->short_description_id;
         $product->long_description_en = $request->long_description_en;
         $product->long_description_id = $request->long_description_id;
-        $product->hot_deals = $request->hot_deals;
         $product->featured = $request->featured;
 
         $product->special_offer = $request->special_offer;
@@ -204,12 +202,14 @@ class ProductController extends Controller
             $product->thumbnail = $path;
         }
 
-        // count discount percentage
+
         if ($request->discount) {
             $percentage = ($request->discount / $request->price) * 100;
             $product->discount_percentage = $percentage;
+            $product->hot_deals = 1;
         } else {
             $product->discount_percentage = NULL;
+            $product->hot_deals = NULL;
         }
         $product->save();
 
@@ -310,5 +310,13 @@ class ProductController extends Controller
         );
 
         return redirect()->back()->with($notification);
+    }
+
+    public function details($id, $slug)
+    {
+        $product = Product::findOrFail($id);
+        $multiImage = MultiImage::where('product_id', $id)->get();
+
+        return view('frontend.products.details', compact('product', 'multiImage'));
     }
 }

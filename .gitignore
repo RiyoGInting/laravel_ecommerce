@@ -1,8 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/upload/admin/*
-/public/upload/user/*
+/public/upload/*
 /storage/*.key
 /vendor
 .env

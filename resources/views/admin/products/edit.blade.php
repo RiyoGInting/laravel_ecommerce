@@ -289,7 +289,7 @@
 
                                         <div class="controls">
                                             <fieldset>
-                                                <input type="checkbox" id="checkbox_1" value="1" {{ $product->hot_deals == 1 ? 'checked' : '' }} name="hot_deals">
+                                                <input type="checkbox" id="checkbox_1" value="1" {{ $product->hot_deals == 1 ? 'checked' : '' }} name="hot_deals" disabled>
                                                 <label for="checkbox_1">Hot Deals</label>
                                             </fieldset>
                                             <fieldset>

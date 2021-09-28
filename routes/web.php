@@ -25,7 +25,6 @@ use App\Models\User;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-// switch language
 Route::get('/language/{locale}', [HomeController::class, 'language']);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin:admin']], function () {
@@ -117,3 +116,5 @@ Route::get('/user/profile', [UserController::class, 'editProfile'])->name('user.
 Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
 Route::get('/user/change/password', [UserController::class, 'changePassword'])->name('user.change.password');
 Route::post('/user/update/password', [UserController::class, 'updatePassword'])->name('user.update.password');
+
+Route::get('/product/details/{id}/{slug}', [ProductController::class, 'details']);

@@ -15,11 +15,19 @@ class HomeController extends Controller
         $categories = Category::orderBy('name_en', 'ASC')->get();
         $sliders = Slider::where('status', 1)->orderBy('id', 'DESC')->limit(3)->get();
         $products = Product::where('status', 1)->orderBy('id', 'DESC')->get();
+        $featured = Product::where('featured', 1)->orderBy('id', 'DESC')->get();
+        $hotDeals = Product::where('hot_deals', 1)->where('discount', '!=', NULL)->orderBy('id', 'DESC')->limit(3)->get();
+        $specialOffer = Product::where('special_offer', 1)->orderBy('updated_at', 'DESC')->limit(3)->get();
+        $specialDeals = Product::where('special_deals', 1)->orderBy('updated_at', 'DESC')->limit(3)->get();
 
         return view('frontend.index', compact(
             'categories',
             'sliders',
-            'products'
+            'products',
+            'featured',
+            'hotDeals',
+            'specialOffer',
+            'specialDeals'
         ));
     }
 
