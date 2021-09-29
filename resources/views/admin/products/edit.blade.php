@@ -30,7 +30,7 @@
                                                     <select name="brand_id" class="form-control">
                                                         <option value="" selected="" disabled="">Select Brand</option>
                                                         @foreach($brands as $brand)
-                                                        <option value="{{ $brand->id }}" {{ $brand->id == $product->id ? 'selected' : '' }}>{{ $brand->name_en }}</option>
+                                                        <option value="{{ $brand->id }}" {{ $brand->id == $product->brand_id ? 'selected' : '' }}>{{ $brand->name_en }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('brand_id')

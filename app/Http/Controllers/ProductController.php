@@ -102,7 +102,7 @@ class ProductController extends Controller
 
         if ($request->discount) {
             $percentage = ($request->discount / $request->price) * 100;
-            $product->discount_percentage = $percentage;
+            $product->discount_percentage = round($percentage, 2);
             $product->hot_deals = 1;
         }
 
@@ -205,7 +205,7 @@ class ProductController extends Controller
 
         if ($request->discount) {
             $percentage = ($request->discount / $request->price) * 100;
-            $product->discount_percentage = $percentage;
+            $product->discount_percentage = round($percentage, 2);
             $product->hot_deals = 1;
         } else {
             $product->discount_percentage = NULL;
@@ -324,7 +324,7 @@ class ProductController extends Controller
     {
         $products = Product::where('status', 1)
             ->where('tags_en', $tag)
-            ->orderBy('id', 'DESC')->paginate(3);
+            ->orderBy('id', 'DESC')->paginate(9);
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
         return view('frontend.products.product_by_tags', compact('products', 'categories'));
@@ -334,7 +334,7 @@ class ProductController extends Controller
     {
         $products = Product::where('status', 1)
             ->where('tags_id', $tag)
-            ->orderBy('id', 'DESC')->paginate(1);
+            ->orderBy('id', 'DESC')->paginate(9);
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
 
@@ -345,7 +345,7 @@ class ProductController extends Controller
     {
         $products = Product::where('status', 1)
             ->where('subcategory_id', $id)
-            ->orderBy('id', 'DESC')->paginate(6);
+            ->orderBy('id', 'DESC')->paginate(9);
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
         return view('frontend.products.subcategory_product_list', compact('products', 'categories'));
@@ -355,7 +355,7 @@ class ProductController extends Controller
     {
         $products = Product::where('status', 1)
             ->where('sublevel_id', $id)
-            ->orderBy('id', 'DESC')->paginate(6);
+            ->orderBy('id', 'DESC')->paginate(9);
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
         return view('frontend.products.sublevel_product_list', compact('products', 'categories'));

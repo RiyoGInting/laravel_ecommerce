@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CategorySeeder extends Seeder
 {
@@ -14,44 +14,18 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categories')->insert([
-            'name_en' => 'Appliances',
-            'name_id' => 'Peralatan',
-            'slug_en' => 'appliances',
-            'slug_id' => 'peralatan',
-            'icon' => 'fa fa-shopping-bag',
-        ]);
+        $name_en = ['Appliances', 'Beauty', 'Electronics', 'Fashion', 'Sweet Home'];
+        $name_id = ['Peralatan', 'Kecantikan', 'Elektronik', 'Gaya', 'Rumah'];
+        $icon = ['fa fa-shopping-bag', 'fa fa-heartbeat', 'fa fa-user', 'fa fa-diamond', 'fa fa-shopping-cart'];
 
-        DB::table('categories')->insert([
-            'name_en' => 'Beauty',
-            'name_id' => 'Kecantikan',
-            'slug_en' => 'beauty',
-            'slug_id' => 'kecantikan',
-            'icon' => 'fa fa-heartbeat',
-        ]);
-
-        DB::table('categories')->insert([
-            'name_en' => 'Electronics',
-            'name_id' => 'Elektronik',
-            'slug_en' => 'electronics',
-            'slug_id' => 'elektronik',
-            'icon' => 'fa fa-user',
-        ]);
-
-        DB::table('categories')->insert([
-            'name_en' => 'Fashion',
-            'name_id' => 'Mode',
-            'slug_en' => 'fashion',
-            'slug_id' => 'mode',
-            'icon' => 'fa fa-diamond',
-        ]);
-
-        DB::table('categories')->insert([
-            'name_en' => 'Sweet Home',
-            'name_id' => 'Rumah',
-            'slug_en' => 'home',
-            'slug_id' => 'rumah',
-            'icon' => 'fa fa-shopping-cart',
-        ]);
+        for ($i = 0; $i < count($name_en); $i++) {
+            $category = new Category;
+            $category->name_en = $name_en[$i];
+            $category->name_id = $name_id[$i];
+            $category->slug_en = strtolower($name_en[$i]);
+            $category->slug_id = strtolower($name_id[$i]);
+            $category->icon = $icon[$i];
+            $category->save();
+        }
     }
 }

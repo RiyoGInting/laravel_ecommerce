@@ -1,6 +1,6 @@
 @php
-$tags_en = App\Models\Product::groupBy('tags_en')->select('tags_en')->get();
-$tags_id = App\Models\Product::groupBy('tags_id')->select('tags_id')->get();
+$tags_en = App\Models\Product::groupBy('tags_en')->select('tags_en')->limit(20)->get();
+$tags_id = App\Models\Product::groupBy('tags_id')->select('tags_id')->limit(20)->get();
 @endphp
 
 <div class="sidebar-widget product-tag wow fadeInUp">
