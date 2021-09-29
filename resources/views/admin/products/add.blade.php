@@ -279,7 +279,7 @@
                                             <div class="form-group">
                                                 <h5>Tags EN <span class="text-danger">*</span></h5>
                                                 <div class="controls">
-                                                    <input type="text" name="tags_en" class="form-control" value="#tags" data-role="tagsinput">
+                                                    <input type="text" name="tags_en" class="form-control" data-role="tagsinput">
                                                     @error('tags_en')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -290,7 +290,7 @@
                                             <div class="form-group">
                                                 <h5>Tags ID <span class="text-danger">*</span></h5>
                                                 <div class="controls">
-                                                    <input type="text" name="tags_id" class="form-control" value="#tags" data-role="tagsinput">
+                                                    <input type="text" name="tags_id" class="form-control" data-role="tagsinput">
                                                     @error('tags_id')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror

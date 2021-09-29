@@ -319,4 +319,45 @@ class ProductController extends Controller
 
         return view('frontend.products.details', compact('product', 'multiImage'));
     }
+
+    public function getBytagsEn($tag)
+    {
+        $products = Product::where('status', 1)
+            ->where('tags_en', $tag)
+            ->orderBy('id', 'DESC')->paginate(3);
+        $categories = Category::orderBy('name_en', 'ASC')->get();
+
+        return view('frontend.products.product_by_tags', compact('products', 'categories'));
+    }
+
+    public function getBytagsId($tag)
+    {
+        $products = Product::where('status', 1)
+            ->where('tags_id', $tag)
+            ->orderBy('id', 'DESC')->paginate(1);
+        $categories = Category::orderBy('name_en', 'ASC')->get();
+
+
+        return view('frontend.products.product_by_tags', compact('products', 'categories'));
+    }
+
+    public function getBySubcategory($id, $slug)
+    {
+        $products = Product::where('status', 1)
+            ->where('subcategory_id', $id)
+            ->orderBy('id', 'DESC')->paginate(6);
+        $categories = Category::orderBy('name_en', 'ASC')->get();
+
+        return view('frontend.products.subcategory_product_list', compact('products', 'categories'));
+    }
+
+    public function getBySublevel($id, $slug)
+    {
+        $products = Product::where('status', 1)
+            ->where('sublevel_id', $id)
+            ->orderBy('id', 'DESC')->paginate(6);
+        $categories = Category::orderBy('name_en', 'ASC')->get();
+
+        return view('frontend.products.sublevel_product_list', compact('products', 'categories'));
+    }
 }

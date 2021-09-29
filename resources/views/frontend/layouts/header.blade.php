@@ -189,9 +189,13 @@
                                                     <div class="col-xs-12 col-sm-6 col-md-2 col-menu">
 
                                                         @if(session()->get('language') == 'english')
-                                                        <h2 class="title">{{ $subcategory->name_en }}</h2>
+                                                        <a href="{{ url('/product/subcategory/'.$subcategory->id.'/'.$subcategory->slug_en) }}">
+                                                            <h2 class="title">{{ $subcategory->name_en }}</h2>
+                                                        </a>
                                                         @else
-                                                        <h2 class="title">{{ $subcategory->name_id }}</h2>
+                                                        <a href="{{ url('/product/subcategory/'.$subcategory->id.'/'.$subcategory->slug_id) }}">
+                                                            <h2 class="title">{{ $subcategory->name_id }}</h2>
+                                                        </a>
                                                         @endif
 
                                                         @php
@@ -201,9 +205,9 @@
                                                         <ul class="links">
                                                             @foreach ($sublevels as $sublevel)
                                                             @if(session()->get('language') == 'english')
-                                                            <li><a href="#">{{ $sublevel->name_en }}</a></li>
+                                                            <li><a href="{{ url('/product/sublevel/'.$sublevel->id.'/'.$sublevel->slug_en) }}">{{ $sublevel->name_en }}</a></li>
                                                             @else
-                                                            <li><a href="#">{{ $sublevel->name_id }}</a></li>
+                                                            <li><a href="{{ url('/product/sublevel/'.$sublevel->id.'/'.$sublevel->slug_id) }}">{{ $sublevel->name_id }}</a></li>
                                                             @endif
                                                             @endforeach
                                                         </ul>

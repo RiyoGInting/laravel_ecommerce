@@ -12,82 +12,7 @@
             <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
 
                 <!-- ================================== TOP NAVIGATION ================================== -->
-                <div class="side-menu animate-dropdown outer-bottom-xs">
-                    <div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Categories</div>
-                    <nav class="yamm megamenu-horizontal">
-                        <ul class="nav">
-
-                            @foreach($categories as $category)
-                            <li class="dropdown menu-item">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon {{ $category->icon }}" aria-hidden="true"></i>
-                                    @if(session()->get('language') == 'english')
-                                    {{ $category->name_en }}
-                                    @else
-                                    {{ $category->name_id }}
-                                    @endif
-                                </a>
-                                <ul class="dropdown-menu mega-menu">
-                                    <li class="yamm-content">
-                                        <div class="row">
-                                            @php
-                                            $subcategories = App\Models\SubCategory::where('category_id', $category->id)->orderBy('name_en', 'ASC')->get();
-                                            @endphp
-
-                                            @foreach($subcategories as $subcategory)
-                                            <div class="col-sm-12 col-md-3">
-                                                @if(session()->get('language') == 'english')
-                                                <h2 class="title">{{ $subcategory->name_en }}</h2>
-                                                @else
-                                                <h2 class="title">{{ $subcategory->name_id }}</h2>
-                                                @endif
-
-                                                @php
-                                                $sublevels = App\Models\SubLevel::where('subcategory_id', $subcategory->id)->orderBy('name_en', 'ASC')->get();
-                                                @endphp
-                                                <ul class="links list-unstyled">
-                                                    @foreach ($sublevels as $sublevel)
-                                                    @if(session()->get('language') == 'english')
-                                                    <li><a href="#">{{ $sublevel->name_en }}</a></li>
-                                                    @else
-                                                    <li><a href="#">{{ $sublevel->name_id }}</a></li>
-                                                    @endif
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                            @endforeach
-                                            <!-- /.col -->
-                                        </div>
-                                        <!-- /.row -->
-                                    </li>
-                                    <!-- /.yamm-content -->
-                                </ul>
-                                <!-- /.dropdown-menu -->
-                            </li>
-                            @endforeach
-                            <!-- /.menu-item -->
-
-                            <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon fa fa-paper-plane"></i>Kids and Babies</a>
-                                <!-- /.dropdown-menu -->
-                            </li>
-                            <!-- /.menu-item -->
-
-                            <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon fa fa-futbol-o"></i>Sports</a>
-                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
-                                <!-- /.dropdown-menu -->
-                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
-                            </li>
-                            <!-- /.menu-item -->
-
-                            <li class="dropdown menu-item"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon fa fa-envira"></i>Home and Garden</a>
-                                <!-- /.dropdown-menu -->
-                            </li>
-                            <!-- /.menu-item -->
-
-                        </ul>
-                        <!-- /.nav -->
-                    </nav>
-                    <!-- /.megamenu-horizontal -->
-                </div>
+                @include('frontend.layouts.sidebar.categories')
                 <!-- /.side-menu -->
                 <!-- ================================== TOP NAVIGATION : END ================================== -->
 
@@ -219,14 +144,7 @@
                 <!-- /.sidebar-widget -->
                 <!-- ============================================== SPECIAL OFFER : END ============================================== -->
                 <!-- ============================================== PRODUCT TAGS ============================================== -->
-                <div class="sidebar-widget product-tag wow fadeInUp">
-                    <h3 class="section-title">Product tags</h3>
-                    <div class="sidebar-widget-body outer-top-xs">
-                        <div class="tag-list"> <a class="item" title="Phone" href="category.html">Phone</a> <a class="item active" title="Vest" href="category.html">Vest</a> <a class="item" title="Smartphone" href="category.html">Smartphone</a> <a class="item" title="Furniture" href="category.html">Furniture</a> <a class="item" title="T-shirt" href="category.html">T-shirt</a> <a class="item" title="Sweatpants" href="category.html">Sweatpants</a> <a class="item" title="Sneaker" href="category.html">Sneaker</a> <a class="item" title="Toys" href="category.html">Toys</a> <a class="item" title="Rose" href="category.html">Rose</a> </div>
-                        <!-- /.tag-list -->
-                    </div>
-                    <!-- /.sidebar-widget-body -->
-                </div>
+                @include('frontend.layouts.sidebar.tags')
                 <!-- /.sidebar-widget -->
                 <!-- ============================================== PRODUCT TAGS : END ============================================== -->
                 <!-- ============================================== SPECIAL DEALS ============================================== -->
@@ -308,34 +226,7 @@
                 <!-- ============================================== NEWSLETTER: END ============================================== -->
 
                 <!-- ============================================== Testimonials============================================== -->
-                <div class="sidebar-widget  wow fadeInUp outer-top-vs ">
-                    <div id="advertisement" class="advertisement">
-                        <div class="item">
-                            <div class="avatar"><img src="{{ asset('frontend/assets/images/testimonials/member1.png') }}" alt="Image"></div>
-                            <div class="testimonials"><em>"</em> Vtae sodales aliq uam morbi non sem lacus port mollis. Nunc condime tum metus eud molest sed consectetuer.<em>"</em></div>
-                            <div class="clients_author">John Doe <span>Abc Company</span> </div>
-                            <!-- /.container-fluid -->
-                        </div>
-                        <!-- /.item -->
-
-                        <div class="item">
-                            <div class="avatar"><img src="{{ asset('frontend/assets/images/testimonials/member3.png') }}" alt="Image"></div>
-                            <div class="testimonials"><em>"</em>Vtae sodales aliq uam morbi non sem lacus port mollis. Nunc condime tum metus eud molest sed consectetuer.<em>"</em></div>
-                            <div class="clients_author">Stephen Doe <span>Xperia Designs</span> </div>
-                        </div>
-                        <!-- /.item -->
-
-                        <div class="item">
-                            <div class="avatar"><img src="{{ asset('frontend/assets/images/testimonials/member2.png') }}" alt="Image"></div>
-                            <div class="testimonials"><em>"</em> Vtae sodales aliq uam morbi non sem lacus port mollis. Nunc condime tum metus eud molest sed consectetuer.<em>"</em></div>
-                            <div class="clients_author">Saraha Smith <span>Datsun &amp; Co</span> </div>
-                            <!-- /.container-fluid -->
-                        </div>
-                        <!-- /.item -->
-
-                    </div>
-                    <!-- /.owl-carousel -->
-                </div>
+                @include('frontend.layouts.sidebar.testimonials')
 
                 <!-- ============================================== Testimonials: END ============================================== -->
 

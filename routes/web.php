@@ -117,4 +117,9 @@ Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->n
 Route::get('/user/change/password', [UserController::class, 'changePassword'])->name('user.change.password');
 Route::post('/user/update/password', [UserController::class, 'updatePassword'])->name('user.update.password');
 
+// frontend routes
 Route::get('/product/details/{id}/{slug}', [ProductController::class, 'details']);
+Route::get('/product/tags/en/{tag}', [ProductController::class, 'getBytagsEn']);
+Route::get('/product/tags/id/{tag}', [ProductController::class, 'getBytagsId']);
+Route::get('/product/subcategory/{id}/{slug}', [ProductController::class, 'getBySubcategory']);
+Route::get('/product/sublevel/{id}/{slug}', [ProductController::class, 'getBySublevel']);

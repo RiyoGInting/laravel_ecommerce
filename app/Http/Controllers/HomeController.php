@@ -20,6 +20,7 @@ class HomeController extends Controller
         $specialOffer = Product::where('special_offer', 1)->orderBy('updated_at', 'DESC')->limit(3)->get();
         $specialDeals = Product::where('special_deals', 1)->orderBy('updated_at', 'DESC')->limit(3)->get();
 
+
         return view('frontend.index', compact(
             'categories',
             'sliders',
