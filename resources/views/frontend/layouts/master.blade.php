@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="">
+    <meta name="csrf_token" content="{{ csrf_token() }}">
     <meta name="author" content="">
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
@@ -89,6 +90,134 @@
                 break;
         }
         @endif
+    </script>
+
+    <!-- Add to Chart Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><strong><span id="productName"></span></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card" style="width: 18rem;">
+                                <img id="productImage" src="" class="card-img-top" alt="..." style="height: 200px; width: 200px;">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="list-group">
+                                <li class="list-group-item">Price: <strong>$</strong><strong id="productPrice"></strong></li>
+                                <li class="list-group-item">Code: <strong id="productCode"></strong></li>
+                                <li class="list-group-item">Brand: <strong id="productBrand"></strong></li>
+                                <li class="list-group-item">Category: <strong id="productCategory"></strong></li>
+                                <li class="list-group-item">Stock:
+                                    <span id="avialabe" class="badge badge-pill badge-success" style="background: green; color: white;"></span>
+                                    <span id="stockouts" class="badge badge-pill badge-danger" style="background: red; color: white;"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Color</label>
+                                <select class="form-control" id="exampleFormControlSelect1" name="color"></select>
+                            </div>
+                            <div class="form-group" id="sizeDropDown">
+                                <label for="exampleFormControlSelect1">Size</label>
+                                <select class="form-control" id="exampleFormControlSelect1" name="size"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Quantity</label>
+                                <input type="number" class="form-control" id="exampleFormControlInput1" value="1" min="1">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mb-2">Add cart</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            header: {
+                'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+            }
+        })
+
+        //product modal
+        function productView(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/product/getOne/' + id,
+                dataType: 'json',
+                success: function(data) {
+                    var language = "{{ Session::get('language');}}";
+
+                    $('#productImage').attr('src', '/' + data.product.thumbnail)
+                    $('#productCode').text(data.product.code)
+                    $('select[name="color"]').empty()
+                    $('select[name="size"]').empty()
+
+                    if (data.product.discount) {
+                        var price = data.product.price - data.product.discount
+                        $('#productPrice').text(price)
+                    } else {
+                        $('#productPrice').text(data.product.price)
+                    }
+
+                    if (data.product.quantity > 0) {
+                        $('#stockouts').text('');
+                        $('#avialabe').text('avialabe');
+                    } else {
+                        $('#avialabe').text('');
+                        $('#stockouts').text('out of stock');
+                    }
+
+                    if (language == 'english') {
+                        $('#productName').text(data.product.name_en)
+                        $('#productCategory').text(data.product.category.name_en)
+                        $('#productBrand').text(data.product.brand.name_en)
+
+                        $.each(data.color_en, function(key, value) {
+                            $('select[name="color"]').append('<option value="' + value + '">' + value + '</option>')
+                        })
+
+                        $.each(data.size_en, function(key, value) {
+                            $('select[name="size"]').append('<option value="' + value + '">' + value + '</option>')
+                            if (data.size_en == "") {
+                                $('#sizeDropDown').hide();
+                            } else {
+                                $('#sizeDropDown').show();
+                            }
+                        })
+                    } else {
+                        $('#productName').text(data.product.name_id)
+                        $('#productCategory').text(data.product.category.name_id)
+                        $('#productBrand').text(data.product.brand.name_id)
+
+                        $.each(data.color_id, function(key, value) {
+                            $('select[name="color"]').append('<option value="' + value + '">' + value + '</option>')
+                        })
+
+                        $.each(data.size_id, function(key, value) {
+                            $('select[name="size"]').append('<option value="' + value + '">' + value + '</option>')
+                            if (data.size_id == "") {
+                                $('#sizeDropDown').hide();
+                            } else {
+                                $('#sizeDropDown').show();
+                            }
+                        })
+                    }
+                }
+            })
+        }
     </script>
 </body>
 

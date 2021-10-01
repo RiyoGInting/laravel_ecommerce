@@ -44,8 +44,8 @@ class ProductSeeder extends Seeder
             $product->size_en = 'Small,Medium,Large';
             $product->size_id = 'Kecil,Sedang,Besar';
 
-            $product->color_en = $faker_en->colorName;
-            $product->color_id = $faker_id->colorName;
+            $product->color_en = "$faker_en->colorName, $faker_en->colorName, $faker_en->colorName";
+            $product->color_id = "$faker_id->colorName, $faker_id->colorName, $faker_id->colorName";
             $product->price = $price;
             $product->short_description_en = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In a fringilla odio, in aliquam erat. Ut pellentesque odio neque, posuere consequat velit accumsan in. Maecenas ac felis eget mauris pellentesque malesuada ac sed nisi. Morbi hendrerit ex eu diam sodales, vel tempor lorem elementum. Duis elementum vulputate ultricies.';
             $product->short_description_id = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In a fringilla odio, in aliquam erat. Ut pellentesque odio neque, posuere consequat velit accumsan in. Maecenas ac felis eget mauris pellentesque malesuada ac sed nisi. Morbi hendrerit ex eu diam sodales, vel tempor lorem elementum. Duis elementum vulputate ultricies.';

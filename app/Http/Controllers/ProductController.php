@@ -315,9 +315,24 @@ class ProductController extends Controller
     public function details($id, $slug)
     {
         $product = Product::findOrFail($id);
+        $color_en = explode(',', $product->color_en);
+        $color_id = explode(',', $product->color_id);
+        $size_en = explode(',', $product->size_en);
+        $size_id = explode(',', $product->size_id);
+
         $multiImage = MultiImage::where('product_id', $id)->get();
 
-        return view('frontend.products.details', compact('product', 'multiImage'));
+        $related_products = Product::where('category_id', $product->category_id)->where('id', '!=', $id)->orderBy('id', 'DESC')->get();
+
+        return view('frontend.products.details', compact(
+            'product',
+            'multiImage',
+            'color_en',
+            'color_id',
+            'size_en',
+            'size_id',
+            'related_products'
+        ));
     }
 
     public function getBytagsEn($tag)
@@ -359,5 +374,22 @@ class ProductController extends Controller
         $categories = Category::orderBy('name_en', 'ASC')->get();
 
         return view('frontend.products.sublevel_product_list', compact('products', 'categories'));
+    }
+
+    public function getOne($id)
+    {
+        $product = Product::with('category', 'brand')->findOrFail($id);
+        $color_en = explode(',', $product->color_en);
+        $color_id = explode(',', $product->color_id);
+        $size_en = explode(',', $product->size_en);
+        $size_id = explode(',', $product->size_id);
+
+        return response()->json(array(
+            'product' => $product,
+            'color_en' => $color_en,
+            'color_id' => $color_id,
+            'size_en' => $size_en,
+            'size_id' => $size_id,
+        ));
     }
 }

@@ -123,3 +123,4 @@ Route::get('/product/tags/en/{tag}', [ProductController::class, 'getBytagsEn']);
 Route::get('/product/tags/id/{tag}', [ProductController::class, 'getBytagsId']);
 Route::get('/product/subcategory/{id}/{slug}', [ProductController::class, 'getBySubcategory']);
 Route::get('/product/sublevel/{id}/{slug}', [ProductController::class, 'getBySublevel']);
+Route::get('/product/getOne/{id}', [ProductController::class, 'getOne']);
