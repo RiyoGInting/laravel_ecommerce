@@ -10,6 +10,7 @@ use App\Http\Controllers\SubLevelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -124,3 +125,8 @@ Route::get('/product/tags/id/{tag}', [ProductController::class, 'getBytagsId']);
 Route::get('/product/subcategory/{id}/{slug}', [ProductController::class, 'getBySubcategory']);
 Route::get('/product/sublevel/{id}/{slug}', [ProductController::class, 'getBySublevel']);
 Route::get('/product/getOne/{id}', [ProductController::class, 'getOne']);
+
+// cart routes
+Route::post('/cart/store/product/{id}', [CartController::class, 'store']);
+Route::get('/product/mini/cart', [CartController::class, 'miniCart']);
+Route::get('/product/mini/cart/delete/{rowId}', [CartController::class, 'deleteMiniCart']);

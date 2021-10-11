@@ -22,6 +22,7 @@ class ProductSeeder extends Seeder
 
         for ($i = 0; $i < 200; $i++) {
             $number = rand(1, 4);
+            $size = rand(0, 1);
             $price = rand(500, 1500);
             $name_en = $faker_en->word;
             $name_id = $faker_id->word;
@@ -41,11 +42,9 @@ class ProductSeeder extends Seeder
             $product->quantity = rand(100, 500);
             $product->tags_en = $tags_en[rand(0, 4)];
             $product->tags_id = $tags_id[rand(0, 4)];
-            $product->size_en = 'Small,Medium,Large';
-            $product->size_id = 'Kecil,Sedang,Besar';
-
             $product->color_en = "$faker_en->colorName, $faker_en->colorName, $faker_en->colorName";
             $product->color_id = "$faker_id->colorName, $faker_id->colorName, $faker_id->colorName";
+
             $product->price = $price;
             $product->short_description_en = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In a fringilla odio, in aliquam erat. Ut pellentesque odio neque, posuere consequat velit accumsan in. Maecenas ac felis eget mauris pellentesque malesuada ac sed nisi. Morbi hendrerit ex eu diam sodales, vel tempor lorem elementum. Duis elementum vulputate ultricies.';
             $product->short_description_id = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In a fringilla odio, in aliquam erat. Ut pellentesque odio neque, posuere consequat velit accumsan in. Maecenas ac felis eget mauris pellentesque malesuada ac sed nisi. Morbi hendrerit ex eu diam sodales, vel tempor lorem elementum. Duis elementum vulputate ultricies.';
@@ -54,6 +53,11 @@ class ProductSeeder extends Seeder
             $product->long_description_id = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In a fringilla odio, in aliquam erat. Ut pellentesque odio neque, posuere consequat velit accumsan in. Maecenas ac felis eget mauris pellentesque malesuada ac sed nisi. Morbi hendrerit ex eu diam sodales, vel tempor lorem elementum. Duis elementum vulputate ultricies. Aenean condimentum sed elit non auctor. Phasellus tincidunt faucibus eros. Donec eu sem et purus iaculis volutpat. In tincidunt, felis nec finibus pharetra, metus odio malesuada orci, eget sagittis felis orci vel odio. Suspendisse facilisis ligula vel varius fringilla.';
             $product->thumbnail = 'upload/product/thumbnail/p' . rand(1, 47) . '.jpeg';
             $product->status = 1;
+
+            if ($size == 1) {
+                $product->size_en = 'Small,Medium,Large';
+                $product->size_id = 'Kecil,Sedang,Besar';
+            }
 
             if ($number == 1) {
                 $discount = rand(50, 450);

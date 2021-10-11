@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="">
-    <meta name="csrf_token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="">
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
@@ -35,6 +35,9 @@
 
     <!-- TOASTR CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+
+    <!-- Sweetalert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="cnt-home">
@@ -98,7 +101,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><strong><span id="productName"></span></strong></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -124,19 +127,18 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Color</label>
-                                <select class="form-control" id="exampleFormControlSelect1" name="color"></select>
+                                <select class="form-control" id="color" name="color"></select>
                             </div>
                             <div class="form-group" id="sizeDropDown">
                                 <label for="exampleFormControlSelect1">Size</label>
-                                <select class="form-control" id="exampleFormControlSelect1" name="size"></select>
+                                <select class="form-control" id="size" name="size"></select>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Quantity</label>
-                                <input type="number" class="form-control" id="exampleFormControlInput1" value="1" min="1">
+                                <input type="number" class="form-control" id="qty" value="1" min="1">
                             </div>
-
-                            <button type="submit" class="btn btn-primary mb-2">Add cart</button>
-
+                            <input type="hidden" id="productId">
+                            <button type="submit" class="btn btn-primary mb-2" onclick="addToCart()">Add cart</button>
                         </div>
                     </div>
                 </div>
@@ -146,10 +148,10 @@
 
     <script type="text/javascript">
         $.ajaxSetup({
-            header: {
-                'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content')
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        })
+        });
 
         //product modal
         function productView(id) {
@@ -160,16 +162,18 @@
                 success: function(data) {
                     var language = "{{ Session::get('language');}}";
 
-                    $('#productImage').attr('src', '/' + data.product.thumbnail)
-                    $('#productCode').text(data.product.code)
-                    $('select[name="color"]').empty()
-                    $('select[name="size"]').empty()
+                    $('#productId').val(id);
+                    $('#quantity').val(1);
+                    $('#productImage').attr('src', '/' + data.product.thumbnail);
+                    $('#productCode').text(data.product.code);
+                    $('select[name="color"]').empty();
+                    $('select[name="size"]').empty();
 
                     if (data.product.discount) {
-                        var price = data.product.price - data.product.discount
+                        var price = data.product.price - data.product.discount;
                         $('#productPrice').text(price)
                     } else {
-                        $('#productPrice').text(data.product.price)
+                        $('#productPrice').text(data.product.price);
                     }
 
                     if (data.product.quantity > 0) {
@@ -181,16 +185,16 @@
                     }
 
                     if (language == 'english') {
-                        $('#productName').text(data.product.name_en)
-                        $('#productCategory').text(data.product.category.name_en)
-                        $('#productBrand').text(data.product.brand.name_en)
+                        $('#productName').text(data.product.name_en);
+                        $('#productCategory').text(data.product.category.name_en);
+                        $('#productBrand').text(data.product.brand.name_en);
 
                         $.each(data.color_en, function(key, value) {
-                            $('select[name="color"]').append('<option value="' + value + '">' + value + '</option>')
+                            $('select[name="color"]').append('<option value="' + value + '">' + value + '</option>');
                         })
 
                         $.each(data.size_en, function(key, value) {
-                            $('select[name="size"]').append('<option value="' + value + '">' + value + '</option>')
+                            $('select[name="size"]').append('<option value="' + value + '">' + value + '</option>');
                             if (data.size_en == "") {
                                 $('#sizeDropDown').hide();
                             } else {
@@ -198,16 +202,16 @@
                             }
                         })
                     } else {
-                        $('#productName').text(data.product.name_id)
-                        $('#productCategory').text(data.product.category.name_id)
-                        $('#productBrand').text(data.product.brand.name_id)
+                        $('#productName').text(data.product.name_id);
+                        $('#productCategory').text(data.product.category.name_id);
+                        $('#productBrand').text(data.product.brand.name_id);
 
                         $.each(data.color_id, function(key, value) {
-                            $('select[name="color"]').append('<option value="' + value + '">' + value + '</option>')
+                            $('select[name="color"]').append('<option value="' + value + '">' + value + '</option>');
                         })
 
                         $.each(data.size_id, function(key, value) {
-                            $('select[name="size"]').append('<option value="' + value + '">' + value + '</option>')
+                            $('select[name="size"]').append('<option value="' + value + '">' + value + '</option>');
                             if (data.size_id == "") {
                                 $('#sizeDropDown').hide();
                             } else {
@@ -218,7 +222,122 @@
                 }
             })
         }
+
+        // add to cart
+        function addToCart() {
+            var id = $('#productId').val();
+            var productName = $('#productName').text();
+            var color = $('#color option:selected').text();
+            var size = $('#size option:selected').text();
+            var quantity = $('#qty').val();
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                data: {
+                    productName: productName,
+                    color: color,
+                    size: size,
+                    quantity: quantity
+                },
+                url: "/cart/store/product/" + id,
+                success: function(data) {
+                    miniCart();
+                    $('#closeModal').click();
+
+                    // sweetalert
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+
+                    if ($.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success
+                        });
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error
+                        });
+                    }
+                }
+            })
+        }
     </script>
+
+    <script type="text/javascript">
+        function miniCart() {
+            $.ajax({
+                type: 'GET',
+                url: '/product/mini/cart',
+                dataType: 'json',
+                success: function(response) {
+                    $('span[id="cartTotal"]').text(response.cartTotal);
+                    $('#cartQty').text(response.cartQty);
+                    var miniCart = "";
+
+                    $.each(response.carts, function(key, value) {
+                        miniCart += `<div class="cart-item product-summary">
+                                     <div class="row">
+                                        <div class="col-xs-4">
+                                            <div class="image"> <a href="detail.html"><img src="/${value.options.image}" alt=""></a> </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <h3 class="name"><a href="index.php?page-detail">${value.name}</a></h3>
+                                            <div class="price">$${value.price} * ${value.qty} pcs</div>
+                                        </div>
+                                        <div class="col-xs-1 action"> <button type="submit" id="${value.rowId}" onclick="deleteMiniCart(this.id)"><i class="fa fa-trash"></i></button> </div>
+                                    </div>
+                                    </div>
+                                     <!-- /.cart-item -->
+                                     <div class="clearfix"></div>
+                                    <hr>`;
+                    })
+
+                    $('#miniCart').html(miniCart);
+                }
+            })
+        }
+
+        miniCart();
+
+        // delete product from miniCart
+        function deleteMiniCart(rowId) {
+            $.ajax({
+                type: 'GET',
+                url: '/product/mini/cart/delete/' + rowId,
+                dataType: 'json',
+                success: function(data) {
+                    miniCart();
+                    // message 
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            type: 'success',
+                            title: data.success
+                        })
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            title: data.error
+                        })
+                    }
+                }
+            });
+        }
+    </script>
+
 </body>
 
 </html>
