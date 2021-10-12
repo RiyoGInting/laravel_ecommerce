@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminAuthenticatedSessionController;
 
 use App\Models\User;
@@ -130,3 +131,11 @@ Route::get('/product/getOne/{id}', [ProductController::class, 'getOne']);
 Route::post('/cart/store/product/{id}', [CartController::class, 'store']);
 Route::get('/product/mini/cart', [CartController::class, 'miniCart']);
 Route::get('/product/mini/cart/delete/{rowId}', [CartController::class, 'deleteMiniCart']);
+
+Route::group(['prefix' => 'user', 'middleware' => ['user', 'auth'], 'namespace' => 'user'], function () {
+    // wishlist routes
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::post('/add/wishlist/{productId}', [WishlistController::class, 'store']);
+    Route::get('/get/wishlist', [WishlistController::class, 'getAll']);
+    Route::get('/wishlist/delete/{id}', [WishlistController::class, 'delete']);
+});
