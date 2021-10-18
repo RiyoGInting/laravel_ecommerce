@@ -454,6 +454,113 @@
             });
         }
     </script>
+
+    <!-- mycart -->
+    <script type="text/javascript">
+        function mycart() {
+            $.ajax({
+                type: 'GET',
+                url: '/user/get/mycart',
+                dataType: 'json',
+                success: function(data) {
+                    var rows = "";
+
+                    $.each(data.carts, function(key, value) {
+                        rows += `<tr>
+                                    <td class="col-md-2">
+                                        <img src="/${value.options.image}" alt="imga" style="width:60px; height:60px;"/>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <div class="product-name">
+                                            <a href="#">${value.name}</a>
+                                        </div>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <strong>${value.options.color}</strong>
+                                    </td>
+                                    <td class="col-md-2">
+                                        ${value.options.size == null ? `<strong></strong>` : `<strong>${value.options.size}</strong>`}                                        
+                                    </td>
+                                    <td class="col-md-2">
+                                        ${value.qty > 1 ? `<button type="submit" class="btn btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)">-</button>` : `<button type="submit" class="btn btn-danger" disabled="">-</button>`}                                     
+                                        <input type="text" value="${value.qty}" min="1" max="100" disabled="" style="width:25px;">
+                                        <button type="button" class="btn-sm btn-success" id="${value.rowId}" onclick="cartIncrement(this.id)">+</button>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <strong>$${value.subtotal}</strong>
+                                    </td>                                     
+                                    <td class="col-md-1 close-btn">
+                                        <button type="submit" id="${value.rowId}" class="" onclick="deleteCart(this.id)"><i class="fa fa-times"></i></button>
+                                    </td>
+                                </tr>`;
+                    })
+
+                    $('#mycart').html(rows);
+                }
+            })
+        }
+
+        mycart();
+
+        // delete product from cart
+        function deleteCart(id) {
+            $.ajax({
+                type: 'GET',
+                url: '/user/cart/delete/' + id,
+                dataType: 'json',
+                success: function(data) {
+                    mycart();
+                    miniCart();
+                    // message 
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    if ($.isEmptyObject(data.error)) {
+                        Toast.fire({
+                            type: 'success',
+                            icon: 'success',
+                            title: data.success
+                        })
+                    } else {
+                        Toast.fire({
+                            type: 'error',
+                            icon: 'error',
+                            title: data.error
+                        })
+                    }
+                }
+            });
+        }
+
+        // cart increment
+        function cartIncrement(id) {
+            $.ajax({
+                type: "GET",
+                url: "/cart/increment/" + id,
+                dataType: "json",
+                success: function(data) {
+                    mycart();
+                    miniCart();
+                }
+            })
+        }
+
+        // cart decrement
+        function cartDecrement(id) {
+            $.ajax({
+                type: "GET",
+                url: "/cart/decrement/" + id,
+                dataType: "json",
+                success: function(data) {
+                    mycart();
+                    miniCart();
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

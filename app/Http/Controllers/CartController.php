@@ -8,6 +8,11 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        return view('frontend.cart.index');
+    }
+
     public function store(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -51,5 +56,27 @@ class CartController extends Controller
     {
         Cart::remove($rowId);
         return response()->json(['success' => 'Product Removed From Cart']);
+    }
+
+    public function delete($id)
+    {
+        Cart::remove($id);
+        return response()->json(['success' => 'Product Removed From Cart']);
+    }
+
+    public function cartIncrement($id)
+    {
+        $cart = Cart::get($id);
+        Cart::update($id, $cart->qty + 1);
+
+        return response()->json(['message' => 'success']);
+    }
+
+    public function cartDecrement($id)
+    {
+        $cart = Cart::get($id);
+        Cart::update($id, $cart->qty - 1);
+
+        return response()->json(['message' => 'success']);
     }
 }

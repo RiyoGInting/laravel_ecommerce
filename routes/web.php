@@ -127,10 +127,16 @@ Route::get('/product/subcategory/{id}/{slug}', [ProductController::class, 'getBy
 Route::get('/product/sublevel/{id}/{slug}', [ProductController::class, 'getBySublevel']);
 Route::get('/product/getOne/{id}', [ProductController::class, 'getOne']);
 
-// cart routes
+// minicart routes
 Route::post('/cart/store/product/{id}', [CartController::class, 'store']);
 Route::get('/product/mini/cart', [CartController::class, 'miniCart']);
 Route::get('/product/mini/cart/delete/{rowId}', [CartController::class, 'deleteMiniCart']);
+// cart routes
+Route::get('/user/mycart', [CartController::class, 'index'])->name('mycart');
+Route::get('/user/get/mycart', [CartController::class, 'miniCart']);
+Route::get('/user/cart/delete/{id}', [CartController::class, 'delete']);
+Route::get('/cart/increment/{id}', [CartController::class, 'cartIncrement']);
+Route::get('/cart/decrement/{id}', [CartController::class, 'cartDecrement']);
 
 Route::group(['prefix' => 'user', 'middleware' => ['user', 'auth'], 'namespace' => 'user'], function () {
     // wishlist routes
